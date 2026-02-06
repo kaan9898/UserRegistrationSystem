@@ -27,4 +27,22 @@ public class RegistrationSystem {
             logger.info("Process completed. Total records saved: " + validUsers.size());
         }
     }
+    private User parseAndValidate(String line) throws RegistrationException {
+        String[] parts = line.split(",");
+        if (parts.length < 3) {
+            throw new RegistrationException("Invalid line format: missing fields.");
+        }
+        int id = Integer.parseInt(parts[0].trim());
+        String email = validateEmail(parts[1]);
+        int age;
+        try {
+            age = Integer.parseInt(parts[2].trim());
+        } catch (NumberFormatException e) {
+            throw new RegistrationException("Age is not a valid number.");
+        }
+        if (age < 18) {
+            throw new InvalidAgeException("Age restriction: must be 18 or older.");
+        }
+        return new User(id, email, age);
+    }
 }
