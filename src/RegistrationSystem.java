@@ -45,4 +45,14 @@ public class RegistrationSystem {
         }
         return new User(id, email, age);
     }
+
+    private String validateEmail(String rawEmail) throws InvalidEmailException {
+        String email = rawEmail.trim();
+        if (email.isEmpty()) throw new InvalidEmailException("Email cannot be empty.");
+        if (!email.contains("@")) throw new InvalidEmailException("Email must contain @.");
+        if (!email.endsWith(".com") && !email.endsWith(".net") && !email.endsWith(".org")) {
+            throw new InvalidEmailException("Invalid email domain.");
+        }
+        return email;
+    }
 }
